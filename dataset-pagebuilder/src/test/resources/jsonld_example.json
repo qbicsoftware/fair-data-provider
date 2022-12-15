@@ -1,0 +1,20 @@
+{
+    "@context":"http://schema.org",
+    "@type":"Dataset",
+    "@id": "iri",
+    "http://purl.org/dc/terms/conformsTo": {
+        "@id": "https://bioschemas.org/profiles/Dataset/1.0-RELEASE",
+        "@type": "CreativeWork"
+    },
+    "identifier":"some identifier",
+    "keywords":{
+        "@id": "https://example/terms/rna.com",
+        "@type": "DefinedTerm",
+        "inDefinedTermSet": "https://example/terms.com",
+        "name": "rna"
+    },
+    "url":"https://example.com",
+    "description": "cool dataset",
+    "name":"some ngs dataset",
+    "license": "https://example/url.com"
+}
