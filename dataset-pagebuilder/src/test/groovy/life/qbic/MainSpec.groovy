@@ -2,6 +2,9 @@ package life.qbic
 
 import spock.lang.Specification
 
+import java.nio.file.Files
+import java.nio.file.Path
+
 /**
  * <b><class short description - 1 Line!></b>
  *
@@ -21,12 +24,18 @@ class MainSpec extends Specification {
 
     }
 
-    def "example: test a function in a different class"() {
+    def "read from test resource"() {
+
+        given:
+        List<String> testJson = Files.readAllLines(
+                Path.of(this.getClass().getResource("/example.json").toURI()))
+
         when:
-        def b = Main.min(1,2)
+        var numberOfLines = testJson.size()
 
         then:
-        b == 1
+        numberOfLines == 3
+
     }
 
 }
