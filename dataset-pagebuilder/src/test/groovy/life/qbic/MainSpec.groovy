@@ -21,4 +21,12 @@ class MainSpec extends Specification {
 
     }
 
+    def "example: test a function in a different class"() {
+        when:
+        def b = Main.min(1,2)
+
+        then:
+        b == 1
+    }
+
 }
