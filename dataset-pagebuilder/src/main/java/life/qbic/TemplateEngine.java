@@ -1,8 +1,9 @@
 package life.qbic;
 
 import freemarker.template.*;
-import java.io.File;
-import java.io.IOException;
+
+import java.io.*;
+import java.util.Map;
 
 public  class TemplateEngine {
 
@@ -14,10 +15,21 @@ public  class TemplateEngine {
         cfg.setLogTemplateExceptions(false);
         cfg.setWrapUncheckedExceptions(true);
         cfg.setFallbackOnNullLoopVariable(false);
+        cfg.getRecognizeStandardFileExtensions();
         return(cfg);
     }
-    public static void buildPage(Configuration cfg){
-        //TODO
+    public static void buildPage(Configuration cfg, Map dataModel) throws IOException, TemplateException {
+
+        Template temp = cfg.getTemplate("LandingPage_template.ftlh");
+        String newFile = "C://Users/aline/Dokumente/Studium/Semester_7/Bachelorarbeit/fairy-data-provider/dataset-pagebuilder/src/main/resources/firstLandingpage.html";
+        OutputStream out = new FileOutputStream(newFile);
+        Writer writer = new OutputStreamWriter(out);
+
+        try {
+            temp.process(dataModel, writer);
+        } catch (TemplateException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

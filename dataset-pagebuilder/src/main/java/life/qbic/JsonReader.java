@@ -15,10 +15,11 @@ public class JsonReader {
         try {
             ObjectMapper mapper = new ObjectMapper();
             dataModel = mapper.readValue(file, Map.class);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
+        String markup = dataModel.toString();
+        dataModel.put("markup",markup);
         return(dataModel);
     }
 }
