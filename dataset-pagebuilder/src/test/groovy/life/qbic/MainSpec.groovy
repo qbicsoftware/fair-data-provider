@@ -29,13 +29,12 @@ class MainSpec extends Specification {
         given:
         List<String> testJson = Files.readAllLines(
                 Path.of(this.getClass().getResource("/jsonld_example.json").toURI()))
-
         when:
         var numberOfLines = testJson.size()
 
         then:
         numberOfLines == 20
-
     }
+
 
 }

@@ -3,6 +3,7 @@ package life.qbic;
 import freemarker.template.*;
 
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.Map;
 
 public  class TemplateEngine {
@@ -18,10 +19,9 @@ public  class TemplateEngine {
         cfg.getRecognizeStandardFileExtensions();
         return(cfg);
     }
-    public static void buildPage(Configuration cfg, Map dataModel) throws IOException, TemplateException {
+    public static void buildPage(Map dataModel, Template temp) throws IOException, TemplateException {
 
-        Template temp = cfg.getTemplate("LandingPage_template.ftlh");
-        String newFile = "C://Users/aline/Dokumente/Studium/Semester_7/Bachelorarbeit/fairy-data-provider/dataset-pagebuilder/src/main/resources/firstLandingpage.html";
+        String newFile = Paths.get("dataset-pagebuilder/src/main/resources/" + dataModel.get("identifier") + ".html").toAbsolutePath().toString();
         OutputStream out = new FileOutputStream(newFile);
         Writer writer = new OutputStreamWriter(out);
 
