@@ -10,16 +10,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 public class JsonReader {
-    public static Map readFile(File file) {
-        Map dataModel = new HashMap<>();
+    public static Map<String,String> readFile(File file) throws IOException {
+
+        //read json file into a map for template engine to use in html
+        Map<String,String> dataModel = new HashMap<>();
         try {
             ObjectMapper mapper = new ObjectMapper();
             dataModel = mapper.readValue(file, Map.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String markup = dataModel.toString();
-        dataModel.put("markup",markup);
+
         return(dataModel);
     }
 }

@@ -21,9 +21,23 @@
         <li>${key} :  ${value}</li>
     </#list>
 </ul>
-<script>
-<--- bioschemas markup --->
-    ${markup}
+<script type="application/ld+json">
+    {
+            "@context": "${@context}",
+            "@type": "${@type}",
+            "@id": "${@id}",
+            "identifier": "${identifier}",
+            "keywords":{
+                    "@id": "${keywords.@id}" ,
+                    "@type": "${keywords.@type}",
+                    "inDefinedTermSet": "${keywords.inDefinedTermSet}",
+                    "name": "${keywords.name}"
+                    },
+            "url": "${url}",
+            "description": "${description}",
+            "name": "${name}",
+            "license": "${license}"
+        }
 </script>
 </body>
 </html>
