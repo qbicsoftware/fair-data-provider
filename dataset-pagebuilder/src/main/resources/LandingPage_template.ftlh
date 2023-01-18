@@ -1,3 +1,4 @@
+<#ftl output_format="HTML">
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,6 +28,7 @@
             "@type": "${@type}",
             "@id": "${@id}",
             "identifier": "${identifier}",
+            "dct:conformsTo": "${dct\:conformsTo}",
             "keywords":{
                     "@id": "${keywords.@id}" ,
                     "@type": "${keywords.@type}",
@@ -36,7 +38,12 @@
             "url": "${url}",
             "description": "${description}",
             "name": "${name}",
-            "license": "${license}"
+            "license": "${license}",
+            "creator": {
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                "name": "QBiC"
+            }
         }
 </script>
 </body>
