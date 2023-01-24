@@ -85,7 +85,7 @@ public class CommandLineInput {
     }
 
     private static void addFileToIndex(String datasetID, File index, String url) throws IOException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.GERMANY);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss", Locale.GERMANY);
         String lastModified = simpleDateFormat.format(new Date());
 
         try (FileWriter writer = new FileWriter(index,true)) {
