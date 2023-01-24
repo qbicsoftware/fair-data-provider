@@ -5,16 +5,11 @@ import picocli.CommandLine;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Command;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 import static java.util.Objects.nonNull;
 
@@ -22,24 +17,29 @@ import static java.util.Objects.nonNull;
         customSynopsis = {"[COMMAND] [-d=<directory> | -f=<jsonldFile>] [-hV]"},
         version = "Version: Proof of concept")
 public class CommandLineInput {
+    final Path sitemap = Paths.get("dataset-pagebuilder/src/main/resources/sitemap.xml");
 
     @Command(description = "Create a new Landing page for dataset(s)",
             mixinStandardHelpOptions = true)
-    int create() throws IOException {
-        System.out.println("Function works");
+    public int create() throws IOException {
         Path fileIndex = initiateFileIndex();
-        if(nonNull(jsonldFile)){
-            Map dataModel = JsonReader.readFile(jsonldFile);
-            System.out.println(dataModel);
+        if(nonNull(jsonldFile) && jsonldFile.isFile()){
+            // read the json file into java
+            Map<String,String> dataModel = JsonReader.readFile(jsonldFile);
             try {
                 Configuration cfg = TemplateEngine.initiate();
-                TemplateEngine.buildPage(dataModel, cfg.getTemplate("LandingPage_template.ftlh"));
+                String newPage = Paths.get("dataset-pagebuilder/src/main/resources/" + dataModel.get("identifier") + ".html").toAbsolutePath().toString();
+                // Build the new Landing page
+                TemplateEngine.buildPage(dataModel, cfg.getTemplate("LandingPage_template.ftlh"), newPage);
+                addFileToIndex(dataModel.get("identifier"),fileIndex.toFile(), dataModel.get("url"));
+                // Build the new sitemap
+                TemplateEngine.buildPage(createDataModelFromIndex(),cfg.getTemplate("Sitemap_template.ftlx"), sitemap.toString());
+
             }catch(IOException e){
                 e.printStackTrace();
             } catch (TemplateException e) {
                 throw new RuntimeException(e);
             }
-            addFileToIndex(dataModel.get("identifier").toString(),fileIndex.toFile());
             return 0;
         } else {
             System.out.println("there is no file present.");
@@ -76,7 +76,6 @@ public class CommandLineInput {
 
         if(!absolutePath.toFile().isFile()) {
             try {
-                System.out.println(absolutePath);
                 FileOutputStream fileIndex = new FileOutputStream(absolutePath.toString());
             } catch (IOException e) {
                 e.printStackTrace();
@@ -85,13 +84,32 @@ public class CommandLineInput {
         return absolutePath;
     }
 
-    private static void addFileToIndex(String datasetID, File index) throws IOException {
+    private static void addFileToIndex(String datasetID, File index, String url) throws IOException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.GERMANY);
         String lastModified = simpleDateFormat.format(new Date());
 
         try (FileWriter writer = new FileWriter(index,true)) {
-            System.out.printf("%s\t%s%n", datasetID, lastModified);
-            writer.write(String.format("%s\t%s%n", datasetID, lastModified));
+            writer.write(String.format("%s\t%s\t%s%n", datasetID, url, lastModified));
         }
+    }
+
+    private static Map<String, List<String>> createDataModelFromIndex() throws FileNotFoundException {
+        // 1.column: id, 2.column: url, 3. column: lastMod
+        FileReader reader = new FileReader("dataset-pagebuilder/src/main/resources/FileIndex.txt");
+        BufferedReader buffReader = new BufferedReader(reader);
+        List<String> allLines = buffReader.lines().toList();
+        Map<String, List<String>> sitemapDataModel = new HashMap<>();
+
+        List<String> dates = new ArrayList<>();
+        List<String> urls = new ArrayList<>();
+        for (String line : allLines) {
+            String[] separateValues = line.split("\\t");
+            urls.add(separateValues[1]);
+            dates.add(separateValues[2]);
+        }
+        sitemapDataModel.put("urls", urls);
+        sitemapDataModel.put("dates", dates);
+
+        return sitemapDataModel;
     }
 }

@@ -2,11 +2,8 @@
     "@context":"http://schema.org",
     "@type":"Dataset",
     "@id": "iri",
-    "http://purl.org/dc/terms/conformsTo": {
-        "@id": "https://bioschemas.org/profiles/Dataset/1.0-RELEASE",
-        "@type": "CreativeWork"
-    },
-    "identifier":"some identifier",
+    "dct:conformsTo": "https://bioschemas.org/profiles/Dataset/1.0 RELEASE-2022_07_14",
+    "identifier":"ngs123456",
     "keywords":{
         "@id": "https://example/terms/rna.com",
         "@type": "DefinedTerm",
@@ -14,7 +11,12 @@
         "name": "rna"
     },
     "url":"https://example.com",
-    "description": "cool dataset",
+    "description": "A dataset description needs to be at least 50 chars long or otherwise google will throw an error which prevents the dataset for getting a rich result. Therefore: this is a very very interesting and cool dataset and completely deserves to be FAIR meaning findable, accessible, interoperable, reusable and it should be used by many other people because it is so awesome.",
     "name":"some ngs dataset",
-    "license": "https://example/url.com"
+    "license": "https://example/url.com",
+    "creator": {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "QBiC"
+    }
 }
