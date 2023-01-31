@@ -25,7 +25,7 @@ public class CommandLineInput {
         Path fileIndex = initiateFileIndex();
         if(nonNull(jsonldFile) && jsonldFile.isFile()){
             // read the json file into java
-            Map<String,String> dataModel = JsonReader.readFile(jsonldFile);
+            Map<String,String> dataModel = FileHandler.readJsonFile(jsonldFile);
             try {
                 Configuration cfg = TemplateEngine.initiate();
                 String newPage = Paths.get("dataset-pagebuilder/src/main/resources/" + dataModel.get("identifier") + ".html").toAbsolutePath().toString();
@@ -33,7 +33,7 @@ public class CommandLineInput {
                 TemplateEngine.buildPage(dataModel, cfg.getTemplate("LandingPage_template.ftlh"), newPage);
                 addFileToIndex(dataModel.get("identifier"),fileIndex.toFile(), dataModel.get("url"));
                 // Build the new sitemap
-                TemplateEngine.buildPage(createDataModelFromIndex(),cfg.getTemplate("Sitemap_template.ftlx"), sitemap.toString());
+                TemplateEngine.buildPage(FileHandler.createDataModelFromIndex(),cfg.getTemplate("Sitemap_template.ftlx"), sitemap.toString());
 
             }catch(IOException e){
                 e.printStackTrace();
@@ -73,6 +73,7 @@ public class CommandLineInput {
     private static Path initiateFileIndex() {
         Path filePath = Paths.get("dataset-pagebuilder/src/main/resources/FileIndex.txt");
         final Path absolutePath = filePath.toAbsolutePath();
+        System.out.println(absolutePath);
 
         if(!absolutePath.toFile().isFile()) {
             try {
@@ -91,25 +92,5 @@ public class CommandLineInput {
         try (FileWriter writer = new FileWriter(index,true)) {
             writer.write(String.format("%s\t%s\t%s%n", datasetID, url, lastModified));
         }
-    }
-
-    private static Map<String, List<String>> createDataModelFromIndex() throws FileNotFoundException {
-        // 1.column: id, 2.column: url, 3. column: lastMod
-        FileReader reader = new FileReader("dataset-pagebuilder/src/main/resources/FileIndex.txt");
-        BufferedReader buffReader = new BufferedReader(reader);
-        List<String> allLines = buffReader.lines().toList();
-        Map<String, List<String>> sitemapDataModel = new HashMap<>();
-
-        List<String> dates = new ArrayList<>();
-        List<String> urls = new ArrayList<>();
-        for (String line : allLines) {
-            String[] separateValues = line.split("\\t");
-            urls.add(separateValues[1]);
-            dates.add(separateValues[2]);
-        }
-        sitemapDataModel.put("urls", urls);
-        sitemapDataModel.put("dates", dates);
-
-        return sitemapDataModel;
     }
 }
