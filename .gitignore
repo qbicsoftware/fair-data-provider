@@ -31,3 +31,9 @@ error-screenshots/
 */webapp/frontend/generated/theme.d.ts
 */package-lock.json
 /logs/
+/target/maven-status/maven-compiler-plugin/compile/default-cli/createdFiles.lst
+/target/fair-data-provider-1.0-SNAPSHOT-jar-with-dependencies.jar
+/dataset-pagebuilder/src/main/resources/FileIndex.txt
+/target/maven-status/maven-compiler-plugin/compile/default-cli/inputFiles.lst
+/dataset-pagebuilder/src/main/resources/ngs123456.html
+/dataset-pagebuilder/src/main/resources/sitemap.xml
