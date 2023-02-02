@@ -1,4 +1,6 @@
 package life.qbic;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.SftpException;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 import picocli.CommandLine;
@@ -32,15 +34,18 @@ public class CommandLineInput {
                 // Build the new Landing page
                 TemplateEngine.buildPage(dataModel, cfg.getTemplate("LandingPage_template.ftlh"), newPage);
                 addFileToIndex(dataModel.get("identifier"),fileIndex.toFile(), dataModel.get("url"));
+                ServerCommunication.transferFile(new File(newPage));
                 // Build the new sitemap
                 TemplateEngine.buildPage(FileHandler.createDataModelFromIndex(),cfg.getTemplate("Sitemap_template.ftlx"), sitemap.toString());
 
             }catch(IOException e){
                 e.printStackTrace();
-            } catch (TemplateException e) {
+            }catch (TemplateException | JSchException | SftpException e) {
                 throw new RuntimeException(e);
             }
+
             return 0;
+
         } else {
             System.out.println("there is no file present.");
             return 1;
