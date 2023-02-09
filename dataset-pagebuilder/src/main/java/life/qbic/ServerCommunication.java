@@ -10,18 +10,18 @@ import java.io.File;
 public class ServerCommunication {
 
    private static Session authenticate() throws JSchException {
-
+      // define login parameters
       String sshDir = System.getProperty("user.home") + File.separator + ".ssh" + File.separator;
       String host = "fair.qbic.uni-tuebingen.de";
       String username = "root";
       int port = 22;
 
+      //authenticate the session with public key authorization
       JSch jsch = new JSch();
       jsch.setKnownHosts(sshDir + "known_hosts");
       jsch.addIdentity(sshDir + "id_rsa");
       Session session = jsch.getSession(username, host, port);
       session.connect();
-
 
       return session;
    }
@@ -30,10 +30,10 @@ public class ServerCommunication {
       String remoteFile = "/var/www/html/" + file.getName();
       Session workingSession = authenticate();
 
-      // set up a channel to transfer the file through
+      // set up a channel & transfer the file to server
       ChannelSftp channel = (ChannelSftp) workingSession.openChannel("sftp");
       channel.connect();
-      channel.put(file.toString(), remoteFile);
+      channel.put(file.toString(), remoteFile, ChannelSftp.OVERWRITE);
 
       //close all connections
       channel.exit();

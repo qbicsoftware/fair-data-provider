@@ -23,28 +23,9 @@
     </#list>
 </ul>
 <script type="application/ld+json">
-    {
-            "@context": "${@context}",
-            "@type": "${@type}",
-            "@id": "${@id}",
-            "identifier": "${identifier}",
-            "dct:conformsTo": "${dct\:conformsTo}",
-            "keywords":{
-                    "@id": "${keywords.@id}" ,
-                    "@type": "${keywords.@type}",
-                    "inDefinedTermSet": "${keywords.inDefinedTermSet}",
-                    "name": "${keywords.name}"
-                    },
-            "url": "${url}",
-            "description": "${description}",
-            "name": "${name}",
-            "license": "${license}",
-            "creator": {
-                "@context": "https://schema.org",
-                "@type": "Organization",
-                "name": "QBiC"
-            }
-        }
+    <#outputformat "JSON">
+        ${markup}
+    </#outputformat>
 </script>
 </body>
 </html>
