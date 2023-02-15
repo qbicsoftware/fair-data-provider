@@ -5,23 +5,21 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <#if name??><title>QBiC dataset ${name}</title></#if>
+    <meta name="description" content="This is a dataset landing page for the test dataset ${name}">
 </head>
 <body>
 <h1>Landing page</h1>
 
-<p>Dataset name: ${name}</p>
-<p>Description: ${description}</p>
-<p>License to use this dataset: ${license}</p>
-<p>${url}</p>
-<p>${@id}</p>
-<p>${identifier}</p>
-<p>${@type}</p>
-<ul>some keywords:
-    <#list keywords as key,value>
-        <li>${key} :  ${value}</li>
-    </#list>
-</ul>
+<#if name??><p>Dataset name: ${name}</p></#if>
+<#if description??><p>Description: ${description}</p></#if>
+<#if license??><p>License to use this dataset: ${license}</p></#if>
+<#if url??><p>url: ${url}</p></#if>
+<#if @id??><p>id: ${@id}</p></#if>
+<#if identifier??><p>identifier: ${identifier}</p></#if>
+<#if @type??><p>type: ${@type}</p></#if>
+<#if keywords??><p>some keywords: ${"keywords"}</p></#if>
+
 <script type="application/ld+json">
     <#outputformat "JSON">
         ${markup}
