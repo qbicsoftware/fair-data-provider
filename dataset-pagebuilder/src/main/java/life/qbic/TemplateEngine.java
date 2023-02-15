@@ -33,6 +33,7 @@ public  class TemplateEngine {
         Writer writer = new OutputStreamWriter(out);
         try {
             temp.process(dataModel, writer);
+            System.out.println("Page created");
         } catch (TemplateException | IOException e) {
             e.printStackTrace();
         }

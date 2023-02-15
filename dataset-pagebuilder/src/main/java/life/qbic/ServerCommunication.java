@@ -39,6 +39,7 @@ public class ServerCommunication {
       channel.exit();
       workingSession.disconnect();
 
+      System.out.println("File is transferred to the server");
    }
 
 

@@ -1,19 +1,18 @@
 package life.qbic;
 
-
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
-
-import static java.nio.file.Files.readAllBytes;
+import static java.util.Objects.nonNull;
 
 
 /**
@@ -22,13 +21,12 @@ import static java.nio.file.Files.readAllBytes;
 public class FileHandler {
     static final Path SITEMAP = Paths.get("dataset-pagebuilder/src/main/resources/sitemap.xml");
     static final Path FILEINDEX = Paths.get("dataset-pagebuilder/src/main/resources/FileIndex.txt").toAbsolutePath();
+    static final String BASISURL = "https://fair.qbic.uni-tuebingen.de/";
 
-    public static int createLandingPage(File jsonldFile) throws IOException {
+    public static void createLandingPage(Map<String,String> dataModel) throws IOException {
         initiateFileIndex();
-        // read the json file into java
-        Map<String,String> dataModel = readJsonFile(jsonldFile);
         try {
-            String outputPath = Paths.get("dataset-pagebuilder/src/main/resources/" + dataModel.get("identifier") + ".html").toAbsolutePath().toString();
+            String outputPath = Paths.get("dataset-pagebuilder/src/main/webapp/" + dataModel.get("identifier") + ".html").toAbsolutePath().toString();
             // set the configuration to convert dataModel to html/xml
             Configuration cfg = TemplateEngine.initiate();
             TemplateEngine.buildPage(dataModel, cfg.getTemplate("LandingPage_template.ftlh"), outputPath);
@@ -36,44 +34,39 @@ public class FileHandler {
             // local file --> server
             ServerCommunication.transferFile(new File(outputPath));
             // Build the new sitemap
-            TemplateEngine.buildPage(FileHandler.createDataModelFromIndex(),cfg.getTemplate("Sitemap_template.ftlx"), SITEMAP.toString());
+            TemplateEngine.buildPage(FileHandler.getSitemapDataModel(),cfg.getTemplate("Sitemap_template.ftlx"), SITEMAP.toString());
             ServerCommunication.transferFile(new File(SITEMAP.toString()));
-            return 0;
+
         }catch(IOException e){
             e.printStackTrace();
-            return 1;
+
         }catch (TemplateException | JSchException | SftpException e) {
             throw new RuntimeException(e);
         }
+
     }
 
-
-    /**
-     * reads json file into a map for template engine to convert to html
-     * @param file json-ld file
-     * @return Map<String,String>
-     */
-    public static Map<String,String> readJsonFile(File file) {
-
+    public static Map<String,String> createDataModel(String[] keys, String[] values) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
         Map<String,String> dataModel = new HashMap<>();
-        try {
-            //mapper converts the json file into a java Map
-            ObjectMapper mapper = new ObjectMapper();
-            dataModel = mapper.readValue(file, Map.class);
-            dataModel.put("markup", convertJsonToString(file));
-        } catch (IOException e) {
-            e.printStackTrace();
+        dataModel.put("@context","http://schema.org");
+        dataModel.put("@type","dataset");
+        for (int i = 0; i < keys.length; i++) {
+            if(nonNull(keys[i]) && nonNull(values[i])) {
+                dataModel.put(keys[i], values[i]);
+            }
         }
+        String url = BASISURL + dataModel.get("identifier");
+        dataModel.put("url", url);
+        dataModel.put("@id", url);
+        dataModel.put("markup", mapper.writeValueAsString(dataModel));
 
-        return(dataModel);
+        System.out.println("Datamodel created for file" + dataModel.get("identifier"));
+
+        return dataModel;
     }
 
-    private static String convertJsonToString(File file) throws IOException {
-        System.out.println(new String(readAllBytes(file.toPath())));
-        return new String(readAllBytes(file.toPath()));
-    }
-
-    public static Map<String, List<String>> createDataModelFromIndex() throws FileNotFoundException {
+    public static Map<String, List<String>> getSitemapDataModel() throws FileNotFoundException {
         // 1.column: id, 2.column: url, 3. column: lastMod
         FileReader reader = new FileReader("dataset-pagebuilder/src/main/resources/FileIndex.txt");
         BufferedReader buffReader = new BufferedReader(reader);
@@ -106,6 +99,7 @@ public class FileHandler {
 
         try (FileWriter writer = new FileWriter(index,true)) {
             writer.write(String.format("%s\t%s\t%s%n", datasetID, url, lastModified));
+            System.out.println("File is added to the index");
         }
     }
 }
