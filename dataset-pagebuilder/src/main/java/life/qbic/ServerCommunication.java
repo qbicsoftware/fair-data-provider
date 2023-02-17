@@ -22,12 +22,13 @@ public class ServerCommunication {
       jsch.addIdentity(sshDir + "id_rsa");
       Session session = jsch.getSession(username, host, port);
       session.connect();
+      System.out.println("sucessfully authenticated");
 
       return session;
    }
 
-   public static void transferFile(File file) throws JSchException, SftpException {
-      String remoteFile = "/var/www/html/" + file.getName();
+   public static void transferFile(File file, String remoteLocation) throws JSchException, SftpException {
+      String remoteFile = remoteLocation + file.getName();
       Session workingSession = authenticate();
 
       // set up a channel & transfer the file to server

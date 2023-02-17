@@ -27,7 +27,7 @@ public class CommandLineInput {
             while(lineToRead != null){
                 System.out.println("Reading file...");
                 values = lineToRead.split("\\t");
-                Map<String,String> dataModel = FileHandler.createDataModel(keys, values);
+                Map<String,Object> dataModel = FileHandler.createDatasetDataModel(keys, values);
                 FileHandler.createLandingPage(dataModel);
                 lineToRead = buffReader.readLine();
             }
