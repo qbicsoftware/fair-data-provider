@@ -8,8 +8,9 @@ import java.io.File;
  * ssh-keyscan -t rsa fair.qbic.uni-tuebingen.de >> ~/.ssh/known_hosts --> necessary
  */
 public class ServerCommunication {
+   private Session workingSession;
 
-   private static Session authenticate() throws JSchException {
+   public static ServerCommunication authenticate() throws JSchException {
       // define login parameters
       String sshDir = System.getProperty("user.home") + File.separator + ".ssh" + File.separator;
       String host = "fair.qbic.uni-tuebingen.de";
@@ -22,29 +23,36 @@ public class ServerCommunication {
       jsch.addIdentity(sshDir + "id_rsa");
       Session session = jsch.getSession(username, host, port);
       session.connect();
+
+      ServerCommunication sc = new ServerCommunication();
+      sc.setWorkingSession(session);
+
       System.out.println("sucessfully authenticated");
 
-      return session;
+      return sc;
    }
 
-   public static void transferFile(File file, String remoteLocation) throws JSchException, SftpException {
+   public void transferFile(File file, String remoteLocation) throws JSchException, SftpException {
       String remoteFile = remoteLocation + file.getName();
-      Session workingSession = authenticate();
+      //Session workingSession = authenticate();
 
       // set up a channel & transfer the file to server
-      ChannelSftp channel = (ChannelSftp) workingSession.openChannel("sftp");
+      ChannelSftp channel = (ChannelSftp) this.workingSession.openChannel("sftp");
       channel.connect();
       channel.put(file.toString(), remoteFile, ChannelSftp.OVERWRITE);
 
       //close all connections
       channel.exit();
-      workingSession.disconnect();
 
       System.out.println("File is transferred to the server");
    }
 
 
+   public void setWorkingSession(Session workingSession) {
+      this.workingSession = workingSession;
+   }
 
-
-
+   public void closeConnections() {
+      this.workingSession.disconnect();
+   }
 }

@@ -23,24 +23,24 @@ public class FileHandler {
     static final Path FILEINDEX = Paths.get("dataset-pagebuilder/src/main/resources/FileIndex.txt").toAbsolutePath();
     static final String BASISURL = "https://fair.qbic.uni-tuebingen.de/";
 
-    public static void createLandingPage(Map<String,Object> dataModel) throws IOException {
+    public static void createLandingPage(Map<String,Object> dataModel, ServerCommunication sc) throws IOException {
         initiateFileIndex();
         try {
             String outputPath = Paths.get("dataset-pagebuilder/src/main/webapp/" + dataModel.get("identifier") + ".html").toAbsolutePath().toString();
             String datasetIndex = Paths.get("dataset-pagebuilder/src/main/webapp/", "index.html").toAbsolutePath().toString();
             // set the configuration to convert dataModel to html/xml
             Configuration cfg = TemplateEngine.initiate();
-            TemplateEngine.buildPage(dataModel, cfg.getTemplate("LandingPage_template.ftlh"), outputPath.toString());
+            TemplateEngine.buildPage(dataModel, cfg.getTemplate("LandingPage_template.ftlh"), outputPath);
             // local file --> server
-            ServerCommunication.transferFile(new File(outputPath.toString()), "/var/www/html/datasets/");
+            sc.transferFile(new File(outputPath), "/var/www/html/datasets/");
             //updateFileIndex(dataModel);
             addFileToIndex(FILEINDEX.toFile(), dataModel);
             // Build the new sitemap
             TemplateEngine.buildPage(FileHandler.createGeneralDataModel(),cfg.getTemplate("Sitemap_template.ftlx"), SITEMAP.toString());
-            ServerCommunication.transferFile(new File(SITEMAP.toString()), "/var/www/html/");
+            sc.transferFile(new File(SITEMAP.toString()), "/var/www/html/");
             // Build the new index page
             TemplateEngine.buildPage(FileHandler.createGeneralDataModel(),cfg.getTemplate("NavigationPage_template.ftlh"), datasetIndex);
-            ServerCommunication.transferFile(new File(datasetIndex), "/var/www/html/datasets/");
+            sc.transferFile(new File(datasetIndex), "/var/www/html/datasets/");
 
         }catch(IOException e){
             e.printStackTrace();
