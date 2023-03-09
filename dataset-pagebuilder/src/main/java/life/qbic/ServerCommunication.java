@@ -10,18 +10,17 @@ import java.io.File;
 public class ServerCommunication {
    private Session workingSession;
 
-   public static ServerCommunication authenticate() throws JSchException {
+   public static ServerCommunication authenticate(String user) throws JSchException {
       // define login parameters
       String sshDir = System.getProperty("user.home") + File.separator + ".ssh" + File.separator;
       String host = "fair.qbic.uni-tuebingen.de";
-      String username = "root";
       int port = 22;
 
       //authenticate the session with public key authorization
       JSch jsch = new JSch();
       jsch.setKnownHosts(sshDir + "known_hosts");
       jsch.addIdentity(sshDir + "id_rsa");
-      Session session = jsch.getSession(username, host, port);
+      Session session = jsch.getSession(user, host, port);
       session.connect();
 
       ServerCommunication sc = new ServerCommunication();

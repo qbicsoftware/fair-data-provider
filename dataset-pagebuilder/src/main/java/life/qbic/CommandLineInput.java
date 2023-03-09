@@ -10,11 +10,14 @@ import java.util.Map;
 import static java.util.Objects.nonNull;
 
 @Command(name = "fairy", mixinStandardHelpOptions = true,
-        customSynopsis = {"[COMMAND] [-d=<directory> | -f=<jsonldFile>] [-hV]"},
+        customSynopsis = {"[COMMAND] [-u=<username>] [-d=<directory> | -f=<jsonldFile>] [-hV]"},
         version = "Version: Proof of concept")
 public class CommandLineInput {
     @Option(names = {"-f", "--file"}, description = "the path to a tsv file describing dataset metadata", scope = CommandLine.ScopeType.INHERIT)
     File tsvFile;
+
+    @Option(names = {"-u", "--username"}, description = "username for connecting to the server", scope = CommandLine.ScopeType.INHERIT, required = true)
+    String user;
 
     @Command(description = "Create a new Landing page for dataset(s) or a data catalog",
             mixinStandardHelpOptions = true)
@@ -24,7 +27,7 @@ public class CommandLineInput {
             String[] keys = buffReader.readLine().split("\\t");
             String[] values;
             String lineToRead = buffReader.readLine();
-            ServerCommunication sc = ServerCommunication.authenticate();
+            ServerCommunication sc = ServerCommunication.authenticate(user);
 
             while(lineToRead != null){
                 System.out.println("Reading file...");
