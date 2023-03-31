@@ -33,14 +33,11 @@ public class ServerCommunication {
 
    public void transferFile(File file, String remoteLocation) throws JSchException, SftpException {
       String remoteFile = remoteLocation + file.getName();
-      //Session workingSession = authenticate();
 
       // set up a channel & transfer the file to server
       ChannelSftp channel = (ChannelSftp) this.workingSession.openChannel("sftp");
       channel.connect();
       channel.put(file.toString(), remoteFile, ChannelSftp.OVERWRITE);
-
-      //close all connections
       channel.exit();
 
       System.out.println("File is transferred to the server");
