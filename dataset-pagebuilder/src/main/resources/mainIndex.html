@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAIRY: Ensuring findability of QBiC datasets</title>
+  <style>
+    * {
+      margin: 20px;
+    }
+    header {
+      border-radius: 25px;
+      background-color: lightgrey;
+      padding: 15px;
+      text-align: left;
+    }
+    ul {
+      border-radius: 25px;
+      list-style-type: none;
+      margin: 20px;
+      padding: 0px;
+      overflow: hidden;
+      background-color: #333;
+    }
+    li {
+      margin: 0px;
+      padding: 0px;
+      float: left;
+      border-right:1px solid #bbb;
+    }
+    li a {
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      text-decoration: none;
+    }
+    h2 {
+      font-family: "Lucida Handwriting"
+     }
+
+  </style>
+</head>
+<body>
+  <header>
+    <h2>Fairy</h2>
+    <h3>The F in FAIR - Ensuring findability on a global scale</h3>
+  </header>
+  <ul>
+    <li><a href="https://fair.qbic.uni-tuebingen.de/datasets/">Datasets</a></li>
+    <li><a href="https://github.com/qbicsoftware/fairy-data-provider">Tool</a></li>
+  </ul>
+  <main>
+    <h3>What is Fairy?</h3>
+    <p>The tool Fairy is part of a proof of concept implementation for a bachelor thesis. <br>
+    The concept that should be proven here is inspired by the idea of a semantic web and therefore basically  <br>uses the structure of the world wide web to make our datasets findable by search engines.</p>
+    <p>To make this happen, the landing page of each dataset is marked up with json-ld. <br>This markup provides the metadata of the dataset as structured data. To make a search engine "understand" the context of the data, we used <a href="https://schema.org/">schema.org</a>.</p>
+    <p>Now, if the webcrawler of search engines like google dataset search crawl the landing pages, they can index the provided metadata and portray them as rich results. <br>Like this, the datasets and information about them can easily be found by a simple google search. </p>
+    <p>Just as a small disclaimer, this tool is still in the process of development and the datasets that are currently available here are only testing datasets.</p>
+    <h3>How can I use it?</h3>
+    <p>Fairy is supposed to be a lightweight and easy to use tool. It is available on github. You can also get there via the "Tool" button above.</p>
+  </main>
+</body>
+</html>

@@ -37,3 +37,4 @@ error-screenshots/
 /target/maven-status/maven-compiler-plugin/compile/default-cli/inputFiles.lst
 /dataset-pagebuilder/src/main/resources/ngs123456.html
 /dataset-pagebuilder/src/main/resources/sitemap.xml
+/dataset-pagebuilder/src/main/webapp/
