@@ -1,0 +1,5 @@
+identifier	description	name	license	keywords	creator	measurementTechnique	dateCreated
+uniqueIdDataset1	Description that has at least 50 characters	DatasetName1	URLForLicense	Keyword1, Keyword2, KeywordN	creatorName	e.g.Mass Spectrometry	01.01.2000 01:00
+uniqueIdDataset2	Description that has at least 50 characters	DatasetName2	URLForLicense	Keyword1, Keyword2, KeywordN	creatorName	e.g.Mass Spectrometry	01.01.2000 01:00
+uniqueIdDatasetn	Description that has at least 50 characters	DatasetNameN	URLForLicense	Keyword1, Keyword2, KeywordN	creatorName	e.g.Mass Spectrometry	01.01.2000 01:00
+		

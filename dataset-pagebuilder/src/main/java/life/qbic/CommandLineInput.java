@@ -10,16 +10,16 @@ import java.util.Map;
 import static java.util.Objects.nonNull;
 
 @Command(name = "fairy", mixinStandardHelpOptions = true,
-        customSynopsis = {"[COMMAND] [-u=<username>] [-d=<directory> | -f=<jsonldFile>] [-hV]"},
+        customSynopsis = {"[COMMAND] -f=<tsvFile> -u=<username> [-hV]"},
         version = "Version: Proof of concept")
 public class CommandLineInput {
-    @Option(names = {"-f", "--file"}, description = "the path to a tsv file describing dataset metadata", scope = CommandLine.ScopeType.INHERIT, required = true)
+    @Option(names = {"-f", "--file"}, description = "The path to a tsv file describing dataset metadata", scope = CommandLine.ScopeType.INHERIT, required = true)
     File tsvFile;
 
-    @Option(names = {"-u", "--username"}, description = "username for connecting to the server", scope = CommandLine.ScopeType.INHERIT, required = true)
+    @Option(names = {"-u", "--username"}, description = "Username for connecting to the server", scope = CommandLine.ScopeType.INHERIT, required = true)
     String user;
 
-    @Command(description = "Create a new Landing page for dataset(s) or a data catalog",
+    @Command(description = "Create a new Landing page for dataset(s)",
             mixinStandardHelpOptions = true)
     public int create() throws IOException, JSchException {
         if(nonNull(tsvFile) && tsvFile.isFile()){
@@ -48,12 +48,5 @@ public class CommandLineInput {
             System.out.println("Please provide a Path to a tsv file by -f <path>");
             return 1;
         }
-    }
-
-    @Command(description = "Delete Landing page(s) for dataset(s)",
-            mixinStandardHelpOptions = true)
-    int delete(){
-        //TODO
-        return CommandLine.ExitCode.OK;
     }
 }
