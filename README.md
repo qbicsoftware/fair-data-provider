@@ -5,6 +5,7 @@
 <i>A Java command line tool to make datasets findable on a global scale in a FAIR way</i>
 
 ![language](https://img.shields.io/badge/language-java-blue.svg)
+[![license](https://img.shields.io/github/license/qbicsoftware/fairy-data-provider)](https://github.com/qbicsoftware/fairy-data-provider/blob/main/LICENSE)
 
 </div>
 
@@ -13,7 +14,7 @@ FAIRY creates landing pages for the provided datasets.
 These landing pages contain Schema.org markup with properties proposed by the Bioschemas.org dataset profile.
 The landing pages and the dataset markup can then be found by search engines.
 
-The website hosting all the landing pages is [the FAIRY Website](https://fair.qbic.uni-tuebingen.de/).
+The website hosting all the landing pages is [the FAIRY Website](https://fair.qbic.uni-tuebingen.de/).    
 All dataset landing pages are accessible from this page: [Dataset Navigation Page](https://fair.qbic.uni-tuebingen.de/datasets/)
 
 ## How to run _FAIRY_
