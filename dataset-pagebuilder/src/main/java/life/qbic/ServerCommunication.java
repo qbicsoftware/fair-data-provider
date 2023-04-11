@@ -10,18 +10,17 @@ import java.io.File;
 public class ServerCommunication {
    private Session workingSession;
 
-   public static ServerCommunication authenticate() throws JSchException {
+   public static ServerCommunication authenticate(String user) throws JSchException {
       // define login parameters
       String sshDir = System.getProperty("user.home") + File.separator + ".ssh" + File.separator;
       String host = "fair.qbic.uni-tuebingen.de";
-      String username = "root";
       int port = 22;
 
       //authenticate the session with public key authorization
       JSch jsch = new JSch();
       jsch.setKnownHosts(sshDir + "known_hosts");
       jsch.addIdentity(sshDir + "id_rsa");
-      Session session = jsch.getSession(username, host, port);
+      Session session = jsch.getSession(user, host, port);
       session.connect();
 
       ServerCommunication sc = new ServerCommunication();
@@ -34,14 +33,11 @@ public class ServerCommunication {
 
    public void transferFile(File file, String remoteLocation) throws JSchException, SftpException {
       String remoteFile = remoteLocation + file.getName();
-      //Session workingSession = authenticate();
 
       // set up a channel & transfer the file to server
       ChannelSftp channel = (ChannelSftp) this.workingSession.openChannel("sftp");
       channel.connect();
       channel.put(file.toString(), remoteFile, ChannelSftp.OVERWRITE);
-
-      //close all connections
       channel.exit();
 
       System.out.println("File is transferred to the server");

@@ -49,7 +49,10 @@
         </tr>
         <tr>
             <td>Keywords</td>
-            <td>${keywords!"sadly there is no information available"}</td>
+            <td>
+            <#list keywords as key>
+                <p>${key}</p>
+            </#list>
         </tr>
         <tr>
             <td>Unique identifier</td>
@@ -61,11 +64,11 @@
         </tr>
         <tr>
             <td>Creator</td>
-            <td>${creator!"sadly there is no information available"}</td>
+            <td>${creator.name!"sadly there is no information available"}</td>
         </tr>
         <tr>
-            <td>Provider</td>
-            <td>${provider.name}</td>
+            <td>Publisher</td>
+            <td>${publisher.name}</td>
         </tr>
         <tr>
              <td>Measurement technique</td>
