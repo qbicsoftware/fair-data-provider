@@ -17,9 +17,7 @@ public class FileIndexHandler {
     static final String REMOTEFI = "/var/FileIndex.txt";
     public static void initiateFileIndex(ServerCommunication sc) throws IOException, JSchException, SftpException {
         Boolean existenceOfRemoteFileIndex = sc.DoesRemoteFileExist(REMOTEFI);
-        System.out.println(existenceOfRemoteFileIndex);
         if(existenceOfRemoteFileIndex){
-            System.out.println("FileIndex exists on server");
             sc.getFile(REMOTEFI,FILEINDEX.toString());
         } else if (!FILEINDEX.toFile().isFile()) {
             FileOutputStream fileIndex = new FileOutputStream(FILEINDEX.toString());
@@ -38,9 +36,12 @@ public class FileIndexHandler {
         }
     }
 
-    private static void updateFileIndex(Map<String,Object> dataModel) throws IOException {
+    static void updateFileIndex(Map<String, Object> dataModel) throws IOException {
         final String identifier = dataModel.get("identifier").toString();
-        final File tempFileIndex = Paths.get("dataset-pagebuilder/src/main/resources/TempFileIndex.txt").toFile();
+        File tempFileIndex = new File("dataset-pagebuilder/src/main/resources/TempFileIndex.txt");
+        File originalFileIndex = new File(FILEINDEX.toUri());
+        System.out.println(originalFileIndex.exists());
+
         boolean wasReplaced = false;
         String currentIdOfFile;
 
@@ -49,13 +50,12 @@ public class FileIndexHandler {
         output.close();
 
         // read in current Fileindex: [id, url, lastMod, description]
-        FileReader reader = new FileReader(FILEINDEX.toFile());
+        FileReader reader = new FileReader(originalFileIndex);
         BufferedReader buffReader = new BufferedReader(reader);
 
         String lineToRead = buffReader.readLine();
         while(lineToRead != null) {
             currentIdOfFile = lineToRead.split("\\t")[0];
-            System.out.println(currentIdOfFile);
             if (currentIdOfFile.equals(identifier)) {
                 addFileToIndex(tempFileIndex,dataModel);
                 wasReplaced = true;
@@ -67,9 +67,17 @@ public class FileIndexHandler {
             }
             lineToRead = buffReader.readLine();
         }
+        buffReader.close();
+
         if (!wasReplaced){
             addFileToIndex(tempFileIndex,dataModel);
         }
-        System.out.println(tempFileIndex.renameTo(FILEINDEX.toFile()));
+        if (!originalFileIndex.delete()) {
+            System.out.println("Failed to delete the file.");
+        }
+        if (!tempFileIndex.renameTo(originalFileIndex))
+            System.out.println("Temp file could not be renamed");
+
     }
 }
+

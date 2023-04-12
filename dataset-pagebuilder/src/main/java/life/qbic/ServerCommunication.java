@@ -26,7 +26,7 @@ public class ServerCommunication {
       ServerCommunication sc = new ServerCommunication();
       sc.setWorkingSession(session);
 
-      System.out.println("sucessfully authenticated");
+      System.out.println("successfully authenticated");
 
       return sc;
    }
@@ -39,7 +39,6 @@ public class ServerCommunication {
       channel.connect();
       channel.put(file.toString(), remoteFile, ChannelSftp.OVERWRITE);
       channel.exit();
-
       System.out.printf("File %s is transferred to the server%n", file.getName());
    }
 
@@ -48,15 +47,12 @@ public class ServerCommunication {
       channel.connect();
       channel.get(RemoteLocation, localLocation);
       channel.exit();
-
-      System.out.println("File downloaded from server");
    }
 
    public Boolean DoesRemoteFileExist(String remoteFile) throws JSchException, SftpException {
       ChannelSftp channel = (ChannelSftp) this.workingSession.openChannel("sftp");
       channel.connect();
       try {
-         System.out.println(!channel.lstat(remoteFile).toString().isEmpty());
          return !channel.lstat(remoteFile).toString().isEmpty();
       } catch (SftpException e){
          if (e.id != ChannelSftp.SSH_FX_NO_SUCH_FILE) {

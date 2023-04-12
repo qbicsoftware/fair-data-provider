@@ -31,8 +31,8 @@ public  class PageBuilder {
             buildPage(dataModel, cfg.getTemplate("LandingPage_template.ftlh"), outputPath);
             // local file --> server
             sc.transferFile(new File(outputPath), "/var/www/html/datasets/");
-            //updateFileIndex(dataModel);
-            FileIndexHandler.addFileToIndex(FILEINDEX.toFile(), dataModel);
+            FileIndexHandler.updateFileIndex(dataModel);
+            //FileIndexHandler.addFileToIndex(FILEINDEX.toFile(), dataModel);
 
         }catch(IOException | TemplateException | JSchException | SftpException e){
             e.printStackTrace();
