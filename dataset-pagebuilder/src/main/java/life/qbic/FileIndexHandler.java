@@ -1,5 +1,8 @@
 package life.qbic;
 
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.SftpException;
+
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,8 +14,14 @@ import java.util.TimeZone;
 
 public class FileIndexHandler {
     static final Path FILEINDEX = Paths.get("dataset-pagebuilder/src/main/resources/FileIndex.txt").toAbsolutePath();
-    public static void initiateFileIndex() throws IOException {
-        if(!FILEINDEX.toFile().isFile()) {
+    static final String REMOTEFI = "/var/FileIndex.txt";
+    public static void initiateFileIndex(ServerCommunication sc) throws IOException, JSchException, SftpException {
+        Boolean existenceOfRemoteFileIndex = sc.DoesRemoteFileExist(REMOTEFI);
+        System.out.println(existenceOfRemoteFileIndex);
+        if(existenceOfRemoteFileIndex){
+            System.out.println("FileIndex exists on server");
+            sc.getFile(REMOTEFI,FILEINDEX.toString());
+        } else if (!FILEINDEX.toFile().isFile()) {
             FileOutputStream fileIndex = new FileOutputStream(FILEINDEX.toString());
             fileIndex.close();
         }

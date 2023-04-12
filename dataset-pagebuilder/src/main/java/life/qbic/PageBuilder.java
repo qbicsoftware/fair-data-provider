@@ -51,6 +51,8 @@ public  class PageBuilder {
             // Build new dataset navigation page
             PageBuilder.buildPage(generalDataModel,cfg.getTemplate("NavigationPage_template.ftlh"), datasetNavPagePath);
             sc.transferFile(new File(datasetNavPagePath), "/var/www/html/datasets/");
+            // Update FileIndex on server
+            sc.transferFile(new File(FILEINDEX.toString()), "/var/");
         }catch(IOException | TemplateException | JSchException | SftpException e){
             e.printStackTrace();
             throw new RuntimeException(e);

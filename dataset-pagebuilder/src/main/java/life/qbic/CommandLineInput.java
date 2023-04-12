@@ -1,5 +1,6 @@
 package life.qbic;
 import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.SftpException;
 import picocli.CommandLine;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Command;
@@ -21,10 +22,10 @@ public class CommandLineInput {
 
     @Command(description = "Create a new Landing page for dataset(s)",
             mixinStandardHelpOptions = true)
-    public int create() throws IOException, JSchException {
+    public int create() throws IOException, JSchException, SftpException {
         if(nonNull(tsvFile) && tsvFile.isFile()){
             ServerCommunication sc = ServerCommunication.authenticate(user);
-            FileIndexHandler.initiateFileIndex();
+            FileIndexHandler.initiateFileIndex(sc);
 
             BufferedReader buffReader = new BufferedReader(new FileReader(tsvFile));
             String[] keys = buffReader.readLine().split("\\t");
