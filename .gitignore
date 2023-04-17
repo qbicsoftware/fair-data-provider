@@ -38,3 +38,4 @@ error-screenshots/
 /dataset-pagebuilder/src/main/resources/ngs123456.html
 /dataset-pagebuilder/src/main/resources/sitemap.xml
 /dataset-pagebuilder/src/main/webapp/
+/target/classes/life/qbic/Main.class
