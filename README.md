@@ -19,8 +19,13 @@ All dataset landing pages are accessible from this page: [Dataset Navigation Pag
 
 ## How to run _FAIRY_
 ### Download
-Soon _FAIRY_'s compiled and executable Java binaries as JAR will be available on this repository.
-With the JAR file, _FAIRY_ can be used with a few easy commands and options.
+
+_FAIRY_ can be run by downloading the compiled and executable Java binary (JAR) that is available on this repository.
+This JAR file is called `FAIRY-1.0.0-jar-with-dependencies.jar` and can be executed via the command line.
+For this to work, the command has to be executed in the same directory that the JAR file is stored in.
+With this JAR file, _FAIRY_ can be used with a few easy commands and options.
+
+It is also possible to use FAIRY by downloading the source code and building it locally on your computer, for example with an IDE.
 
 ### Requirements 
 To use the tool, you need to be allowed to connect to the server that hosts the landing pages. A connection to this server is also only possible from within the VPN of the University of Tübingen.
@@ -57,10 +62,10 @@ The path to a file needs to be provided with the `-f or --file` option. Also, a 
 
 An example for a full create command would be:  
 ````
-Java -jar fairy.jar create -f "../Example.tsv" -u username
+java -jar FAIRY-1.0.0-jar-with-dependencies.jar create -f ..\DatasetMetadataFile.tsv -u username
 ````
 
-With this command, _FAIRY_ will create landing pages with the information specified in the Example.tsv file for each dataset represented in this file.
+With this command, _FAIRY_ will create landing pages with the information specified in the DatasetMetadataFile.tsv file for each dataset represented in this file.
 
 ### Input file 
 The file that needs to be provided with the `-f or --file` option currently needs to be in **TSV format**.
@@ -88,7 +93,7 @@ This tool is currently a prototype that was created as part of a bachelor thesis
 Therefore, it does only have functionalities needed to make the tool work and to proof the concept that was worked out in the thesis and not any further.
 
 ### License
-_FAIRY_ can be used under the MIT license.  
+_FAIRY_ can be used under the MIT license (MIT).  
 Other frameworks used for this tool have the following licenses:
 
 - Jackson: [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0)
