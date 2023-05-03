@@ -49,7 +49,7 @@ public abstract class DataModel {
     /**
      * @param keys terms used as keys in the map -> schema.org properties
      * @param values values describing the keys
-     * @return Datamodel for a dataset
+     * @return Data model for a dataset
      * @throws JsonProcessingException if the dataset can't be turned into a json format
      */
     public abstract Map<String,Object> createDataModel(String[] keys, String[] values) throws JsonProcessingException;

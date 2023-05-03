@@ -15,11 +15,11 @@ import java.util.TimeZone;
 public class FileIndexHandler {
     static final Path SITEMAP = setOutputPath("webapp" + File.separator + "sitemap.xml");
     static final Path FILEINDEX = setOutputPath("webapp" + File.separator + "FileIndex.txt");
-    static final String REMOTEFI = "/var/FileIndex.txt";
+    static final String REMOTEINDEX = "/var/FileIndex.txt";
     public static void initiateFileIndex(ServerCommunication sc) throws IOException, JSchException, SftpException {
-        Boolean existenceOfRemoteFileIndex = sc.DoesRemoteFileExist(REMOTEFI);
+        Boolean existenceOfRemoteFileIndex = sc.DoesRemoteFileExist(REMOTEINDEX);
         if(existenceOfRemoteFileIndex){
-            sc.getFile(REMOTEFI,FILEINDEX.toString());
+            sc.getFile(REMOTEINDEX,FILEINDEX.toString());
         } else if (!FILEINDEX.toFile().isFile()) {
             FileOutputStream fileIndex = new FileOutputStream(FILEINDEX.toString());
             fileIndex.close();

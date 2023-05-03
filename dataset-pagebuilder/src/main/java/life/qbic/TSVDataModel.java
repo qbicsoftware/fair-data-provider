@@ -39,7 +39,7 @@ public class TSVDataModel extends DataModel {
         Map<String,String> publisherMarkup = new HashMap<>();
         Map<String,Object> dataModel = new HashMap<>();
 
-        // Adding the basic schema.org and bioschemas.org json-ld markup for a dataset
+        // Adding the basic schema.org and Bioschemas.org json-ld markup for a dataset
         dataModel.put("@context","http://schema.org");
         dataModel.put("@type","dataset");
         dataModel.put("http://purl.org/dc/terms/conformsTo","https://bioschemas.org/profiles/Dataset/1.0-RELEASE");
