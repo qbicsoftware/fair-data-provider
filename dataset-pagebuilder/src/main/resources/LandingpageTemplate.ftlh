@@ -12,7 +12,7 @@
     </head>
     <body>
         <main>
-          <div class="card mx-auto mt-2" style="min-width: 18rem; max-width: 93%">
+          <div class="card mx-auto mt-2" style="min-width: 18rem; max-width: 80%">
             <div class="card-body">
               <div id="badges container">
                 <div class="row justify-content-end">
@@ -22,13 +22,13 @@
                 </div>
               </div>
               <h3 class="card-title">Dataset ${name}</h3>
-              <h5 class="card-subtitle text-muted">
+              <h6 class="card-subtitle text-muted">
                 ${identifier}
-              </h5>
-              <p class="card-text">
+              </h6>
+              <p class="card-text mt-3">
                 ${description}
             </div>
-            <div class="card-footer container">
+            <div class="card-footer container" style="min-width: 18rem; max-width: 100%">
               <div class="row">
                 <div class="col text-left">
                   Created by: ${creator.name! "currently no information available"}
@@ -39,7 +39,7 @@
                 </div>
               </div>
             </div>
-            <div class="card-footer container">
+            <div class="card-footer container" style="min-width: 18rem; max-width: 100%">
               <div class="row">
                 <div class="col-md-auto">
                     Licensed under <a href="${license}">${license}</a>
@@ -53,7 +53,7 @@
             </div>
           </div>
         </main>
-        <footer class="card-footer container border-0 bg-light">
+        <footer class="card-footer container border-0 bg-white" style="min-width: 18rem; max-width: 80%">
             <a href="https://fair.qbic.uni-tuebingen.de/datasets/">
                 <button type="button" class="btn btn-outline-info mt-2">See more datasets</button>
             </a>
