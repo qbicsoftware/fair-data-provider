@@ -4,6 +4,7 @@
 
 <i>A Java command line tool to make datasets findable on a global scale in a FAIR way</i>
 
+[![DOI](https://zenodo.org/badge/578526097.svg)](https://zenodo.org/badge/latestdoi/578526097)
 ![language](https://img.shields.io/badge/language-java-blue.svg)
 [![license](https://img.shields.io/github/license/qbicsoftware/fairy-data-provider)](https://github.com/qbicsoftware/fairy-data-provider/blob/main/LICENSE)
 
