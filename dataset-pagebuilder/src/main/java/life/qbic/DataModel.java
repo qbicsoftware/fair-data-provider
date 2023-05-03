@@ -5,15 +5,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static life.qbic.FileIndexHandler.FILEINDEX;
+
 public abstract class DataModel {
-    static private final Path FILEINDEX = Paths.get("dataset-pagebuilder/src/main/resources/FileIndex.txt").toAbsolutePath();
 
     /**
      * Needed for the sitemap and the Dataset navigation page

@@ -46,7 +46,7 @@ public class CommandLineInput {
 
             return 0;
         } else {
-            System.out.println("Please provide a Path to a tsv file by -f <path>");
+            System.out.println("No path or invalid path provided. Please provide a Path to an existing tsv file by -f <path>");
             return 1;
         }
     }

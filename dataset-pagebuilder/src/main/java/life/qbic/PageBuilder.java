@@ -3,18 +3,19 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
 import freemarker.template.*;
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+
+import static life.qbic.FileIndexHandler.*;
+import static life.qbic.FileIndexHandler.FILEINDEX;
+import static life.qbic.FileIndexHandler.SITEMAP;
 
 /**
  * Creates html/xml pages on base of a template and a java data model
  * Data model: Map
  */
 public  class PageBuilder {
-    static final Path SITEMAP = Paths.get("dataset-pagebuilder/src/main/resources/sitemap.xml");
-    static final Path FILEINDEX = Paths.get("dataset-pagebuilder/src/main/resources/FileIndex.txt").toAbsolutePath();
+
     static final Configuration cfg;
 
     static {
@@ -26,13 +27,12 @@ public  class PageBuilder {
     }
 
     public static void createLandingPage(Map<String,Object> dataModel, ServerCommunication sc) {
-        String outputPath = Paths.get("dataset-pagebuilder/src/main/webapp/" + dataModel.get("identifier") + ".html").toAbsolutePath().toString();
+        String outputPath = setOutputPath("webapp" + File.separator + dataModel.get("identifier") + ".html").toString();
         try {
-            buildPage(dataModel, cfg.getTemplate("LandingPage_template.ftlh"), outputPath);
+            buildPage(dataModel, cfg.getTemplate("LandingpageTemplate.ftlh"), outputPath);
             // local file --> server
             sc.transferFile(new File(outputPath), "/var/www/html/datasets/");
-            FileIndexHandler.updateFileIndex(dataModel);
-            //FileIndexHandler.addFileToIndex(FILEINDEX.toFile(), dataModel);
+            updateFileIndex(dataModel);
 
         }catch(IOException | TemplateException | JSchException | SftpException e){
             e.printStackTrace();
@@ -42,7 +42,7 @@ public  class PageBuilder {
     }
 
     public static void createSEOPages(ServerCommunication sc) {
-        String datasetNavPagePath = Paths.get("dataset-pagebuilder/src/main/webapp/", "index.html").toAbsolutePath().toString();
+        String datasetNavPagePath = setOutputPath("webapp" + File.separator + "index.html").toString();
         try {
             Map<String, List<String>> generalDataModel = TSVDataModel.createGeneralDataModel();
             // Build new sitemap
@@ -61,7 +61,7 @@ public  class PageBuilder {
 
     public static Configuration initiate() throws IOException {
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_29);
-        cfg.setDirectoryForTemplateLoading(new File("dataset-pagebuilder/src/main/resources"));
+        cfg.setDirectoryForTemplateLoading(new File(setOutputPath("resources").toString()));
         cfg.setDefaultEncoding("UTF-8");
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER); // change to DEBUG_HANDLER only in the end!!
         cfg.setLogTemplateExceptions(false);

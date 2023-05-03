@@ -13,7 +13,8 @@ import java.util.Map;
 import java.util.TimeZone;
 
 public class FileIndexHandler {
-    static final Path FILEINDEX = Paths.get("dataset-pagebuilder/src/main/resources/FileIndex.txt").toAbsolutePath();
+    static final Path SITEMAP = setOutputPath("webapp" + File.separator + "sitemap.xml");
+    static final Path FILEINDEX = setOutputPath("webapp" + File.separator + "FileIndex.txt");
     static final String REMOTEFI = "/var/FileIndex.txt";
     public static void initiateFileIndex(ServerCommunication sc) throws IOException, JSchException, SftpException {
         Boolean existenceOfRemoteFileIndex = sc.DoesRemoteFileExist(REMOTEFI);
@@ -38,9 +39,8 @@ public class FileIndexHandler {
 
     static void updateFileIndex(Map<String, Object> dataModel) throws IOException {
         final String identifier = dataModel.get("identifier").toString();
-        File tempFileIndex = new File("dataset-pagebuilder/src/main/resources/TempFileIndex.txt");
+        File tempFileIndex = new File(setOutputPath("resources" + File.separator + "TempFileIndex.txt").toString());
         File originalFileIndex = new File(FILEINDEX.toUri());
-        System.out.println(originalFileIndex.exists());
 
         boolean wasReplaced = false;
         String currentIdOfFile;
@@ -79,5 +79,16 @@ public class FileIndexHandler {
             System.out.println("Temp file could not be renamed");
 
     }
+
+    public static Path setOutputPath(String resourceRelativePath){
+        String fullResourceRelativePath = "dataset-pagebuilder" + File.separator + "src" + File.separator + "main" + File.separator + resourceRelativePath;
+        Path userDir = Paths.get(System.getProperty("user.dir"));
+        if (userDir.getFileName().toString().equals("target")){
+            userDir = userDir.getParent();
+            userDir = userDir.getParent();
+        }
+        return Paths.get(userDir.toString() + File.separator + fullResourceRelativePath);
+    }
+
 }
 
