@@ -50,6 +50,7 @@
     </dependencies>
   </dependencyManagement>
   <build>
+    <finalName>FAIRY-1.0.0</finalName>
     <pluginManagement>
       <plugins>
         <plugin>
